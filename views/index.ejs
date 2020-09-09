@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+    
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+    $(document).ready(function(){
+        var socket = io();
+
+        socket.on("currentCount", function(data){
+            var current = data.current;
+            var h3 = document.createElement("h3");
+            h3.innerHTML = `The button has been pushed ${current} time(s)`
+            $("#intro").html(h3);
+        });
+
+        $("#add").click(function(e){
+            e.preventDefault();
+            socket.emit('updatedCount')
+        })
+        $("#reset").click(function (e) {
+            e.preventDefault();
+            socket.emit('reset')
+        })
+    });
+    </script>
+
+</head>
+
+<body>
+    <div class="box container-fluid">
+        <div id="intro"></div>
+        <h6>Push the button to update the count!</h6>
+
+        <a id="add" href="/add" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Add</a>
+    </div>
+    <a id="reset" href="/reset" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Reset</a>
+</body>
+
+</html>
